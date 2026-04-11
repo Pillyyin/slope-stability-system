@@ -196,7 +196,7 @@ with tab4:
     # 主要公式
     st.latex(r"F_s = \frac{\sum \left[ \frac{c' \cdot b + (W - u \cdot b) \tan \phi'}{m_\alpha} \right]}{\sum (W \cdot \sin \alpha + k_h \cdot W \cdot \cos \alpha)}")
     
-    st.write("其中疊代係數 $m_\alpha$ 為：")
+    st.write("其中疊代係數 $m_\\alpha$ 為：")
     st.latex(r"m_\alpha = \cos \alpha + \frac{\tan \phi' \cdot \sin \alpha}{F_s}")
 
     st.markdown("---")
