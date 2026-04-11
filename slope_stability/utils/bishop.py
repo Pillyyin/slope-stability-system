@@ -20,7 +20,7 @@ def bishop_fs(c: float, phi_deg: float, gamma: float, beta_deg: float,
     gamma     : unit weight (kN/m³)
     beta_deg  : slope angle (degrees)
     H         : slope height (m)
-    gw_ratio  : groundwater ratio hw/H  (0 – 1)
+    gw_ratio  : groundwater ratio hw/H  (0 ??? 1)
     rain      : if True, add 30% excess pore pressure
     quake     : if True, add horizontal seismic coefficient kh = 0.15
     n_slices  : number of slices
