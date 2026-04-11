@@ -6,6 +6,7 @@ Intelligent Slope Stability Assessment & Dynamic Visualization System
 
 import streamlit as st
 
+#   設定網頁的標題、圖示、版面寬度，這是 Streamlit 固定的開場設定
 st.set_page_config(
     page_title="智慧邊坡穩定評估系統",
     page_icon="⛰️",
@@ -13,6 +14,7 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
+#   用 HTML/CSS 自訂顏色樣式，safe為綠色、warn為黃色、danger為紅色
 st.markdown("""
 <style>
     .main-header { font-size: 1.6rem; font-weight: 600; color: #1e3a5f; margin-bottom: 0.2rem; }
@@ -29,6 +31,7 @@ st.markdown("""
 from utils.bishop import bishop_fs
 from utils.plots import plot_slope, plot_sensitivity, plot_multi_sensitivity
 
+#   建立左側操作面板 st.slider("名稱", 最小值, 最大值, 預設值, 步進值)
 with st.sidebar:
     st.markdown("## ⛰️ 參數輸入面板")
     st.markdown("---")
@@ -54,6 +57,7 @@ with st.sidebar:
     st.markdown("---")
     st.caption("方法：Simplified Bishop Method\n疊代收斂容差：0.001")
 
+#   呼叫計算
 result = bishop_fs(c, phi, gamma, beta, H, gw_ratio, rain, quake, num_slices)
 Fs         = result["Fs"]
 ru         = result["ru"]
@@ -63,10 +67,13 @@ slices     = result["slices"]
 st.markdown('<div class="main-header">⛰️ 智慧邊坡穩定評估與動態視覺化模擬系統</div>', unsafe_allow_html=True)
 st.markdown('<div class="sub-header">Intelligent Slope Stability Assessment & Dynamic Visualization System ｜ Simplified Bishop Method</div>', unsafe_allow_html=True)
 
+#   安全警示顯示(畫面切成三欄，比例是 1:1:3)
+#   左欄：Fs 數值+顏色標籤，中欄：ru、疊代次數、切片數，右欄：文字建議
 col_fs, col_status, col_advice = st.columns([1, 1, 3])
 
 with col_fs:
     st.metric("安全係數 Fs", f"{Fs:.3f}")
+    #   根據 Fs 數值顯示不同顏色的警示標籤
     if Fs >= 1.5:
         st.markdown('<span class="fs-safe">✅ 安全 SAFE</span>', unsafe_allow_html=True)
     elif Fs >= 1.2:
@@ -94,12 +101,15 @@ with col_advice:
 
 st.divider()
 
+#   建立四個標籤頁
 tab1, tab2, tab3, tab4 = st.tabs(["📊 邊坡剖面 & 切片示意", "📈 敏感度分析", "📑 分析報告", "📖 理論基礎"])
 
+#   邊坡剖面圖
 with tab1:
     fig_slope = plot_slope(c, phi, gamma, beta, H, gw_ratio, rain, quake, num_slices, slices, Fs)
     st.plotly_chart(fig_slope, use_container_width=True)
 
+#   敏感度分析
 with tab2:
     st.markdown("#### 參數對安全係數影響分析")
     sens_col1, sens_col2 = st.columns(2)
@@ -132,6 +142,7 @@ with tab2:
     fig_multi = plot_multi_sensitivity(c, phi, gamma, beta, H, gw_ratio, rain, quake, num_slices)
     st.plotly_chart(fig_multi, use_container_width=True)
 
+#   分析報告
 with tab3:
     st.markdown("#### 📄 邊坡穩定性分析報告")
     import datetime
@@ -176,6 +187,8 @@ with tab3:
         file_name=f"slope_report_{datetime.datetime.now().strftime('%Y%m%d_%H%M')}.md",
         mime="text/markdown"
     )
+
+#   理論基礎
 with tab4:
     st.markdown("### 1. 簡化畢夏普法 (Simplified Bishop Method)")
     st.write("本系統採用簡化畢夏普法進行圓弧滑動面分析，其安全係數 $F_s$ 的定義如下：")
