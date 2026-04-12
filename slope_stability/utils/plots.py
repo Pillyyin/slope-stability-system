@@ -144,11 +144,29 @@ def plot_slope(c, phi, gamma, beta, H, gw_ratio, rain, quake, n_slices, slices, 
                    gridcolor="#f0f0f0", range=[-total_x*0.05, total_x*1.05]),
         yaxis=dict(title="Height (m)", showgrid=True, gridcolor="#f0f0f0",
                    scaleanchor="x", scaleratio=1, range=[-H*0.25, H*1.25]),
-        legend=dict(orientation="h", y=-0.18, x=0),
-        margin=dict(l=50, r=30, t=50, b=50),
+        legend=dict(orientation="h", y=-0.22, x=0), # 稍微下調避免擋到標籤
+        
+        # --- 新增標籤設定，解決重疊問題 ---
+        annotations=[
+            # Fs=1.5 Safe (放線的右上方)
+            dict(x=total_x, y=1.5, text="Fs=1.5 Safe", showarrow=False, 
+                 xanchor="right", yanchor="bottom", yshift=5, font=dict(color="green", size=11)),
+            
+            # Fs=1.2 Warning (放線的右下方，避免擠在同一高度)
+            dict(x=total_x, y=1.2, text="Fs=1.2 Warning", showarrow=False, 
+                 xanchor="right", yanchor="top", yshift=-5, font=dict(color="orange", size=11)),
+            
+            # Fs=1.0 Danger (再往下移一點)
+            dict(x=total_x, y=1.0, text="Fs=1.0 Alert/Danger", showarrow=False, 
+                 xanchor="right", yanchor="top", yshift=-25, font=dict(color="red", size=11))
+        ],
+        # ----------------------------
+
+        margin=dict(l=50, r=30, t=50, b=80), # 底部 margin 增加，給 legend 更多空間
         plot_bgcolor="rgba(240,248,255,0.6)",
         paper_bgcolor="white",
-        height=420)
+        height=450) # 高度稍微增加一點，看起來比較不擠
+    
     return fig
 
 
